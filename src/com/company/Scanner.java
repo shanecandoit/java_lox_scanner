@@ -37,8 +37,33 @@ public class Scanner {
             case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
+            case '/':
+                if (match('/')){
+                    // comments run til end of line
+                    while (peek() != '\n' && !isDone()) {
+                        advance();
+                    }
+                }else{
+                    addToken(SLASH);
+                }
+                break;
+                // white space
+            case ' ':
+            case '\r':
+            case '\t':
+                break;
+            case '\n':
+                line++;
+                break;
             default: Loxt.error(line, "Unexpected character.");
         }
+    }
+
+    private char peek() {
+        if (isDone()) {
+            return '\0';
+        }
+        return source.charAt(current);
     }
 
     private boolean match(char expected) {

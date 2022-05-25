@@ -2,7 +2,7 @@ package com.company;
 
 public enum TokenType {
     // single char
-    PLUS, EQUAL,
+    PLUS, EQUAL, SLASH,
     // double char
     EQUAL_EQUAL,
 
