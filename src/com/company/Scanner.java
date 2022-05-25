@@ -2,9 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.company.TokenType.EOF;
-import static com.company.TokenType.PLUS;
+import static com.company.TokenType.*;
 
 public class Scanner {
 
@@ -36,7 +34,23 @@ public class Scanner {
         char c = advance();
         switch (c) {
             case '+': addToken(PLUS); break;
+            case '=':
+                addToken(match('=') ? EQUAL_EQUAL : EQUAL);
+                break;
+            default: Loxt.error(line, "Unexpected character.");
         }
+    }
+
+    private boolean match(char expected) {
+        if (isDone()) {
+            return false;
+        }
+        if (source.charAt(current)!=expected) {
+            return false;
+        }
+
+        current++;
+        return true;
     }
 
     private char advance() {

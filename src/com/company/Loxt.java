@@ -5,4 +5,8 @@ public class Loxt {
 
         System.out.println("Loxt");
     }
+
+    public static void error(int line, String message) {
+        System.err.println("["+line+"] Error: "+message);
+    }
 }
