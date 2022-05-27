@@ -64,8 +64,34 @@ public class Scanner {
             case '\n':
                 line++;
                 break;
+            case '"':
+                // string literals
+                string();
+                break;
             default: Loxt.error(line, "Unexpected character.");
         }
+    }
+
+    private void string() {
+        while (peek() != '"' && !isDone()) {
+            if (peek() == '\n') {
+                line++;
+            }
+            advance();
+        }
+
+        if (isDone()) {
+            Loxt.error(line, "Unterminated string");
+            return;
+        }
+
+        // the closing "
+        advance();
+
+        // trim quotes
+        String value = source.substring(start+1,
+                current-1);
+        addToken(STRING, value);
     }
 
     private char peek() {
