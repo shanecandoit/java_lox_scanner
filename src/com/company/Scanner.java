@@ -68,8 +68,43 @@ public class Scanner {
                 // string literals
                 string();
                 break;
-            default: Loxt.error(line, "Unexpected character.");
+            default:
+                if (isDigit(c)) {
+                    number();
+                }else {
+                    Loxt.error(line, "Unexpected character.");
+                }
         }
+    }
+
+    private void number() {
+        while (isDigit(peek())) {
+            advance();
+        }
+
+        // decimal?
+        if (peek() == '.' && isDigit(peekNext())) {
+            // consume .
+            advance();
+            while (isDigit(peek())) {
+                advance();
+            }
+        }
+
+        Double num = Double.parseDouble(
+                source.substring(start,current));
+        addToken(NUMBER, num);
+    }
+
+    private char peekNext() {
+        if (current+1 >= source.length()) {
+            return '\0';
+        }
+        return source.charAt(current+1);
+    }
+
+    private boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 
     private void string() {
